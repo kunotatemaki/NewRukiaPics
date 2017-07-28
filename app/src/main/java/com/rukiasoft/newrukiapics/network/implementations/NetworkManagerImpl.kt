@@ -2,7 +2,7 @@ package com.rukiasoft.newrukiapics.network.implementations
 
 import android.util.Log
 import com.rukiasoft.newrukiapics.BuildConfig
-import com.rukiasoft.newrukiapics.model.FlickrResponse
+import com.rukiasoft.newrukiapics.network.model.FlickrResponse
 import com.rukiasoft.newrukiapics.network.endpoints.FlickrEndpoints
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
@@ -55,8 +55,8 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
         call.enqueue(object : Callback<FlickrResponse> {
             override fun onResponse(call: Call<FlickrResponse>?, response: Response<FlickrResponse>?) {
 
-                if (response != null && response.isSuccessful) {
-                    val respuesta = response.body()
+                if (response?.isSuccessful as Boolean) {
+                    val respuesta = response?.body()
                     Log.d("EXITO", "HA saldio bien" )
                     //todo tratar la respuesta
                 } else {

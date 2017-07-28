@@ -1,6 +1,6 @@
 package com.rukiasoft.newrukiapics.network.endpoints
 
-import com.rukiasoft.newrukiapics.model.FlickrResponse
+import com.rukiasoft.newrukiapics.network.model.FlickrResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.QueryMap

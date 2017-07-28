@@ -1,4 +1,4 @@
-package com.rukiasoft.newrukiapics.model
+package com.rukiasoft.newrukiapics.network.model
 
 
 import com.google.gson.JsonObject
