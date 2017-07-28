@@ -18,17 +18,12 @@ import javax.inject.Inject
  * Created by Roll on 28/7/17.
  */
 
-class NetworkManagerImpl : NetworkManager{
+class NetworkManagerImpl @Inject constructor() : NetworkManager{
 
-    val retrofit : Retrofit
-
-    @Inject
-    constructor() {
-        this.retrofit = Retrofit.Builder()
-        .baseUrl(FlickrConstants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-    }
+    val retrofit : Retrofit = Retrofit.Builder()
+            .baseUrl(FlickrConstants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     override fun getPics(tags: String, order: FlickrConstants.Order ) {
 
@@ -62,12 +57,11 @@ class NetworkManagerImpl : NetworkManager{
 
                 if (response != null && response.isSuccessful) {
                     val respuesta = response.body()
+                    Log.d("EXITO", "HA saldio bien" )
                     //todo tratar la respuesta
                 } else {
                     Log.d("PRUEBA", "a ver qué sale")
                 }
-
-
             }
 
             override fun onFailure(call: Call<FlickrResponse>?, t: Throwable?) {
@@ -78,5 +72,7 @@ class NetworkManagerImpl : NetworkManager{
 
 
     }
+
+
 
 }

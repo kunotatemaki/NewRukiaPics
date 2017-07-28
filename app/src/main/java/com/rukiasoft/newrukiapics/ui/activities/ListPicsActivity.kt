@@ -3,13 +3,18 @@ package com.rukiasoft.newrukiapics.ui.activities
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
 import com.rukiasoft.newrukiapics.network.implementations.NetworkManagerImpl
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class ListPicsActivity : AppCompatActivity() {
+
+    @Inject
+    protected lateinit var network : NetworkManager
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -33,10 +38,11 @@ class ListPicsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        var app = application as FlickrApplication
+        app.mComponent.inject(this)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        val networkManager = NetworkManagerImpl()
-        networkManager.getPics("perros", FlickrConstants.Order.PUBLISHED)
+        network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED)
     }
 }
