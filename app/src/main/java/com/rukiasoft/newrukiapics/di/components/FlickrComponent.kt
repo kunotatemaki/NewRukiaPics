@@ -1,7 +1,7 @@
 package com.rukiasoft.newrukiapics.di.components
 
+import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
 import com.rukiasoft.newrukiapics.di.modules.NetworkModule
-import com.rukiasoft.newrukiapics.ui.activities.ListPicsActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -11,6 +11,5 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = arrayOf(NetworkModule::class))
 interface FlickrComponent {
-    fun getListActivityComponent(activity: ListPicsActivity): ListPicsActivity
-    fun inject(activity : ListPicsActivity)
+    fun getListActivityComponent(module: ListPicsModule): ListPicsComponent
 }
