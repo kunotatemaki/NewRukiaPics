@@ -11,10 +11,10 @@ import javax.inject.Singleton
  */
 
 @Module
+@Singleton
 class NetworkModule{
 
     @Provides
-    @Singleton
     fun providesNetworManager(network : NetworkManagerImpl) : NetworkManager{
         return network
     }

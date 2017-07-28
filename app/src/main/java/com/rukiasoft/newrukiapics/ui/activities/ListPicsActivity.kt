@@ -1,5 +1,6 @@
 package com.rukiasoft.newrukiapics.ui.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +16,9 @@ class ListPicsActivity : BaseActivity() {
 
     @Inject
     protected lateinit var network : NetworkManager
+
+    @Inject
+    protected lateinit var context : Context
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -39,6 +43,7 @@ class ListPicsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         var app = application as FlickrApplication
+
         app.mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
