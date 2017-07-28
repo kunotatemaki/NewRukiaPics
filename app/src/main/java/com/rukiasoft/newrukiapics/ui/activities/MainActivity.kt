@@ -1,8 +1,9 @@
-package com.rukiasoft.newrukiapics
+package com.rukiasoft.newrukiapics.ui.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import com.rukiasoft.newrukiapics.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
