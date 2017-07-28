@@ -7,8 +7,6 @@ import java.util.*
  */
 interface NetworkManager {
 
-    fun getPics(pics: String)
-
-    fun getPics(pics: Collections)
+    fun getPics(tags: String)
 
 }
