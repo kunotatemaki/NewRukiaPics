@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.rukiasoft.newrukiapics.R
+import com.rukiasoft.newrukiapics.network.implementations.NetworkManagerImpl
+import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
+import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ListPicsActivity : AppCompatActivity() {
@@ -32,5 +35,8 @@ class ListPicsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        val networkManager = NetworkManagerImpl()
+        networkManager.getPics("perros", FlickrConstants.Order.PUBLISHED)
     }
 }

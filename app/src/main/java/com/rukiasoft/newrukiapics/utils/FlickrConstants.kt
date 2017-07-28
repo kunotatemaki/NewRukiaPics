@@ -3,9 +3,11 @@ package com.rukiasoft.newrukiapics.utils
 /**
  * Created by Roll on 28/7/17.
  */
-class FlickrConstants{
+object FlickrConstants{
 
-    val FLICKR_METHOD = "method"
+    val BASE_URL : String = "https://api.flickr.com/services/rest/";
+
+    val FLICKR_METHOD : String = "method"
     val FLICKR_API_KEY = "api_key"
     val FLICKR_TAGS = "tags"
     val FLICKR_SAFE_SEARCH = "safe_search"
@@ -15,4 +17,9 @@ class FlickrConstants{
     val FLICKR_SORT = "sort"
     val FLICKR_NO_JSON_CALLBACK = "nojsoncallback"
     val FLICKR_DELIMITER = ","
+
+    enum class Order {
+        PUBLISHED,
+        TAKEN
+    }
 }

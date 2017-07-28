@@ -1,5 +1,6 @@
 package com.rukiasoft.newrukiapics.network.interfaces
 
+import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import java.util.*
 
 /**
@@ -7,6 +8,6 @@ import java.util.*
  */
 interface NetworkManager {
 
-    fun getPics(tags: String)
+    fun getPics(tags: String, order: FlickrConstants.Order)
 
 }
