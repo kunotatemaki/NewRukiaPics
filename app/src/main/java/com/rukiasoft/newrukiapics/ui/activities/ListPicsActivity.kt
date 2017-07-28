@@ -7,12 +7,14 @@ import android.support.v7.app.AppCompatActivity
 import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
 import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
+import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
+import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class ListPicsActivity : BaseActivity() {
+class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     @Inject
     protected lateinit var network : NetworkManager
@@ -50,4 +52,25 @@ class ListPicsActivity : BaseActivity() {
 
         network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED)
     }
+
+    override fun showProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setPicsInUI(pics: List<Pic>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getPicsFromCache() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showToast(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }

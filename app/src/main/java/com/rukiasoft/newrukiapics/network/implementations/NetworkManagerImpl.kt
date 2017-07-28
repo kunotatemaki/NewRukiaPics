@@ -1,10 +1,13 @@
 package com.rukiasoft.newrukiapics.network.implementations
 
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.JsonElement
 import com.rukiasoft.newrukiapics.BuildConfig
-import com.rukiasoft.newrukiapics.network.model.FlickrResponse
+import com.rukiasoft.newrukiapics.model.PicsResponse
 import com.rukiasoft.newrukiapics.network.endpoints.FlickrEndpoints
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
+import com.rukiasoft.newrukiapics.network.model.FlickrResponse
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import retrofit2.Call
 import retrofit2.Callback
@@ -56,15 +59,30 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
             override fun onResponse(call: Call<FlickrResponse>?, response: Response<FlickrResponse>?) {
 
                 if (response?.isSuccessful as Boolean) {
-                    val respuesta = response?.body()
-                    Log.d("EXITO", "HA saldio bien" )
-                    //todo tratar la respuesta
+                    val photos = response.body()
+                            ?.photos
+                            ?.get("photo")
+                            ?.asJsonArray
+                    val list : MutableList<PicsResponse> = arrayListOf()
+
+                    if (photos != null) {
+                        photos.mapTo(list) { Gson().fromJson<PicsResponse>(it, PicsResponse::class.java) }
+                    }
+                    Log.d("TAG", list.size.toString())
+                    if(order == FlickrConstants.Order.PUBLISHED) {
+                        Log.d("TAG", "PUBLISHER")
+                    } else if (order == FlickrConstants.Order.TAKEN) {
+                        Log.d("TAG", "TAKEN")
+                    }
+
                 } else {
+                    //todo mostrar mensaje de error
                     Log.d("PRUEBA", "a ver qué sale")
                 }
             }
 
             override fun onFailure(call: Call<FlickrResponse>?, t: Throwable?) {
+                //todo mostrar mensaje de error
                 Log.d("ERROR", t?.message)
             }
         })
