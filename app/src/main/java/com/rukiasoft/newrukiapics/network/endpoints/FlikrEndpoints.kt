@@ -9,6 +9,6 @@ import retrofit2.http.QueryMap
 interface FlikrEndpoints {
 
     @GET(".")
-    fun getImages(@QueryMap params: Map<String, String>)
+    fun getPics(@QueryMap params: Map<String, String>)
 
 }

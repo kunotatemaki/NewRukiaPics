@@ -1,12 +1,14 @@
 package com.rukiasoft.newrukiapics.network.interfaces
 
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import java.util.*
 
 /**
  * Created by Roll on 28/7/17.
  */
 interface NetworkManager {
 
+    fun getPics(pics: String)
+
+    fun getPics(pics: Collections)
 
 }
