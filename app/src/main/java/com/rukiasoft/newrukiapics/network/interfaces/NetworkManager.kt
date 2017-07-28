@@ -8,7 +8,5 @@ import retrofit2.http.QueryMap
  */
 interface NetworkManager {
 
-    @GET(".")
-    fun Any.getImages(@QueryMap params: Map<String, String>)
 
 }
