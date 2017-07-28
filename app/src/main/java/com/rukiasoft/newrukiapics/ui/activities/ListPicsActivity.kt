@@ -6,13 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
 import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
-import com.rukiasoft.newrukiapics.network.implementations.NetworkManagerImpl
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class ListPicsActivity : AppCompatActivity() {
+class ListPicsActivity : BaseActivity() {
 
     @Inject
     protected lateinit var network : NetworkManager
