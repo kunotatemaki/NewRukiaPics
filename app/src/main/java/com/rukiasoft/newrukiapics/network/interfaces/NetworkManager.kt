@@ -1,5 +1,7 @@
 package com.rukiasoft.newrukiapics.network.interfaces
 
+import android.arch.lifecycle.MutableLiveData
+import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import java.util.*
 
@@ -8,6 +10,6 @@ import java.util.*
  */
 interface NetworkManager {
 
-    fun getPics(tags: String, order: FlickrConstants.Order)
+    fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<List<Pic>>)
 
 }

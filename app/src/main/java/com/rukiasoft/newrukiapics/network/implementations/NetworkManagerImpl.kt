@@ -1,5 +1,6 @@
 package com.rukiasoft.newrukiapics.network.implementations
 
+import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonElement
@@ -33,7 +34,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
     @Inject
     protected lateinit var log : LogHelper
 
-    override fun getPics(tags: String, order: FlickrConstants.Order ) {
+    override fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<List<Pic>>) {
 
         var orderType : String = ""
         if (order == FlickrConstants.Order.PUBLISHED) {
@@ -69,7 +70,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
                             ?.get("photo")
                             ?.asJsonArray
                     val list : MutableList<Pic> = arrayListOf()
-
+                    //map photos to observable value
                     if (photos != null) {
                         photos.mapTo(list) {
                             Pic(Gson().fromJson<PicsResponse>(it, PicsResponse::class.java))
@@ -77,11 +78,13 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
                     }
                     list.forEach { log.d(it.picUrl) }
                     log.d(this, list.size.toString())
+                    listOfPics.value = list
                     if(order == FlickrConstants.Order.PUBLISHED) {
                         Log.d("TAG", "PUBLISHER")
                     } else if (order == FlickrConstants.Order.TAKEN) {
                         Log.d("TAG", "TAKEN")
                     }
+
 
                 } else {
                     //todo mostrar mensaje de error
