@@ -51,7 +51,7 @@ class LogHelper @Inject constructor(){
 
     fun log(theClass: Any, level: Int, t: Throwable?, vararg messages: Any) {
         val tag = makeLogTag(theClass::class.java.simpleName.toString())
-        if (Log.isLoggable(tag, level)) {
+        //if (Log.isLoggable(tag, level)) {
             val message: String
             if (t == null && messages != null && messages.size == 1) {
                 // handle this common case without the extra cost of creating a stringbuffer:
@@ -68,6 +68,6 @@ class LogHelper @Inject constructor(){
                 message = sb.toString()
             }
             Log.println(level, tag, message)
-        }
+        //}
     }
 }

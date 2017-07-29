@@ -35,9 +35,9 @@ interface ListPicsContracts {
 
     interface PresenterContracts{
 
-        fun observerListOfPics(pic: MutableLiveData<List<Pic>>)
+        fun observerListOfPics(listOfPics: MutableLiveData<List<Pic>>)
 
-        fun setDataFromNetworkOrCache(pic: MutableLiveData<List<Pic>>)
+        fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<List<Pic>>)
 
         fun cardClicked(view: View, pic: Pic)
 
@@ -45,7 +45,7 @@ interface ListPicsContracts {
 
         fun unbindView()
 
-        fun downloadPics(pic: MutableLiveData<List<Pic>>, tags: String, order: FlickrConstants.Order)
+        fun downloadPics(listOfPics: MutableLiveData<List<Pic>>, tags: String, order: FlickrConstants.Order)
     }
 
     interface ObserverContracts{

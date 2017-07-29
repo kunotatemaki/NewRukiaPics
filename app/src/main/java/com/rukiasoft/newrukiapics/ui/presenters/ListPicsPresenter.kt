@@ -19,8 +19,8 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     @Inject
     protected lateinit var network : NetworkManager
 
-    override fun downloadPics(pic: MutableLiveData<List<Pic>>, tags: String, order: FlickrConstants.Order) {
-        network?.getPics(tags = tags, order = order)
+    override fun downloadPics(listOfPics: MutableLiveData<List<Pic>>, tags: String, order: FlickrConstants.Order) {
+        network?.getPics(tags = tags, order = order, listOfPics = listOfPics)
     }
 
     override fun observerListOfPics(pic: MutableLiveData<List<Pic>>) {

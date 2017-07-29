@@ -13,6 +13,7 @@ import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
+import com.rukiasoft.newrukiapics.utils.LogHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -26,6 +27,9 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     @Inject
     protected lateinit var context : Context
+
+    @Inject
+    protected lateinit var log : LogHelper
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -53,9 +57,14 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
         app.mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
+        log.d(this,"hola")
+
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED)
+        //todo quitar esta inicializacion
+        val list = MutableLiveData<List<Pic>>()
+        network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = list)
     }
 
     override fun showProgressBar() {

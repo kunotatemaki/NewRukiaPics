@@ -77,24 +77,24 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
                         }
                     }
                     list.forEach { log.d(it.picUrl) }
-                    log.d(this, list.size.toString())
+                    log.d(NetworkManagerImpl::class.java, list.size.toString())
                     listOfPics.value = list
                     if(order == FlickrConstants.Order.PUBLISHED) {
-                        Log.d("TAG", "PUBLISHER")
+                        log.d(NetworkManagerImpl::class.java, "PUBLISHER")
                     } else if (order == FlickrConstants.Order.TAKEN) {
-                        Log.d("TAG", "TAKEN")
+                        log.d(NetworkManagerImpl::class.java, "TAKEN")
                     }
 
 
                 } else {
                     //todo mostrar mensaje de error
-                    log.d(this, "a ver qué sale")
+                    log.d(NetworkManagerImpl::class.java, "a ver qué sale")
                 }
             }
 
             override fun onFailure(call: Call<FlickrResponse>?, t: Throwable?) {
                 //todo mostrar mensaje de error
-                log.d(this, t?.message.toString())
+                log.d(NetworkManagerImpl::class.java, t?.message.toString())
             }
         })
 
