@@ -1,8 +1,10 @@
 package com.rukiasoft.newrukiapics.ui.interfaces
 
-import com.rukiasoft.newrukiapics.model.Pic
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.view.View
+import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 
 
@@ -19,9 +21,16 @@ interface ListPicsContracts {
 
         fun setPicsInUI(pics : List<Pic>)
 
-        fun getPicsFromCache()
+        fun getPicsFromCache() : MutableLiveData<List<Pic>>
 
         fun showToast(message : String)
+
+        fun getLifecycleOwner() : LifecycleOwner
+
+        fun registerObserver(observer: LifecycleObserver)
+
+        fun getPresenter() : PresenterContracts
+
     }
 
     interface PresenterContracts{
@@ -41,6 +50,6 @@ interface ListPicsContracts {
 
     interface ObserverContracts{
 
-        fun registerLifecyclerOwner(view: ViewContracts)
+        fun registerInLifecyclerOwner(view: ViewContracts)
     }
 }

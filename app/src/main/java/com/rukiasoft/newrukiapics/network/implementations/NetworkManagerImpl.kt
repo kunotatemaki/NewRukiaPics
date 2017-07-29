@@ -4,11 +4,13 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.rukiasoft.newrukiapics.BuildConfig
+import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.model.PicsResponse
 import com.rukiasoft.newrukiapics.network.endpoints.FlickrEndpoints
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.network.model.FlickrResponse
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
+import com.rukiasoft.newrukiapics.utils.LogHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +29,9 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
             .baseUrl(FlickrConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+    @Inject
+    protected lateinit var log : LogHelper
 
     override fun getPics(tags: String, order: FlickrConstants.Order ) {
 
@@ -63,12 +68,15 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
                             ?.photos
                             ?.get("photo")
                             ?.asJsonArray
-                    val list : MutableList<PicsResponse> = arrayListOf()
+                    val list : MutableList<Pic> = arrayListOf()
 
                     if (photos != null) {
-                        photos.mapTo(list) { Gson().fromJson<PicsResponse>(it, PicsResponse::class.java) }
+                        photos.mapTo(list) {
+                            Pic(Gson().fromJson<PicsResponse>(it, PicsResponse::class.java))
+                        }
                     }
-                    Log.d("TAG", list.size.toString())
+                    list.forEach { log.d(it.picUrl) }
+                    log.d(this, list.size.toString())
                     if(order == FlickrConstants.Order.PUBLISHED) {
                         Log.d("TAG", "PUBLISHER")
                     } else if (order == FlickrConstants.Order.TAKEN) {
@@ -77,13 +85,13 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
 
                 } else {
                     //todo mostrar mensaje de error
-                    Log.d("PRUEBA", "a ver qué sale")
+                    log.d(this, "a ver qué sale")
                 }
             }
 
             override fun onFailure(call: Call<FlickrResponse>?, t: Throwable?) {
                 //todo mostrar mensaje de error
-                Log.d("ERROR", t?.message)
+                log.d(this, t?.message.toString())
             }
         })
 

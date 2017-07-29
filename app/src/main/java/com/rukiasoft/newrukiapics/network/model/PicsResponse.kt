@@ -53,8 +53,7 @@ class PicsResponse {
     @Expose
     private val datetakenunknown: String? = null
     @SerializedName("url_m")
-    @Expose
-    private val urlM: String? = null
+    @Expose val urlM: String? = null
     @SerializedName("height_m")
     @Expose
     private val heightM: String? = null

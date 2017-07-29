@@ -1,5 +1,6 @@
 package com.rukiasoft.newrukiapics.ui.presenters
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import com.rukiasoft.newrukiapics.model.Pic
@@ -16,7 +17,7 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     private var mView : ListPicsContracts.ViewContracts? = null
 
     @Inject
-    private lateinit var network : NetworkManager
+    protected lateinit var network : NetworkManager
 
     override fun downloadPics(pic: MutableLiveData<List<Pic>>, tags: String, order: FlickrConstants.Order) {
         network?.getPics(tags = tags, order = order)

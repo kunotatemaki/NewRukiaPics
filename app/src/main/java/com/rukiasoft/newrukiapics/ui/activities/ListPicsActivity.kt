@@ -1,9 +1,11 @@
 package com.rukiasoft.newrukiapics.ui.activities
 
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
 import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
 import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
@@ -18,6 +20,9 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     @Inject
     protected lateinit var network : NetworkManager
+
+    @Inject
+    protected lateinit var mPresenter : ListPicsContracts.PresenterContracts
 
     @Inject
     protected lateinit var context : Context
@@ -65,11 +70,23 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getPicsFromCache() {
+    override fun getPicsFromCache() : MutableLiveData<List<Pic>>{
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showToast(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getLifecycleOwner() : LifecycleOwner {
+        return this
+    }
+
+    override fun getPresenter() : ListPicsContracts.PresenterContracts{
+        return mPresenter
+    }
+
+    override fun registerObserver(observer: LifecycleObserver) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
