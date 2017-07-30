@@ -76,7 +76,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
                             Pic(Gson().fromJson<PicsResponse>(it, PicsResponse::class.java))
                         }
                     }
-                    list.forEach { log.d(it.picUrl) }
+
                     log.d(NetworkManagerImpl::class.java, list.size.toString())
                     listOfPics.value = list
                     if(order == FlickrConstants.Order.PUBLISHED) {
