@@ -4,17 +4,22 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
+import com.rukiasoft.newrukiapics.databinding.ListPicsActivityBinding
 import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
+import com.rukiasoft.newrukiapics.ui.adapters.ListPicsAdapter
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
+import com.rukiasoft.newrukiapics.utils.DisplayUtils
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.list_pics_activity.*
 import javax.inject.Inject
 
 class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
@@ -30,6 +35,8 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     @Inject
     protected lateinit var log : LogHelper
+
+    private lateinit var mBinding: ListPicsActivityBinding
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -49,15 +56,17 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        var app = application as FlickrApplication
+        mBinding = DataBindingUtil.setContentView(this, R.layout.list_pics_activity)
 
-        app.mComponent.getListActivityComponent(ListPicsModule()).inject(this)
-
-        log.d(this,"hola")
-
+        //inject dependencies
+        (application as FlickrApplication).mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        //initialize recyclerview
+        val columns : Int = DisplayUtils.calculateNoOfColumns(this.context)
+        val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
+        mBinding.picsRecyclerView.layoutManager = layout
 
         //todo quitar esta inicializacion
         val list = MutableLiveData<List<Pic>>()
@@ -73,7 +82,8 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     }
 
     override fun setPicsInUI(pics: List<Pic>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val adapter = ListPicsAdapter(pics = pics, presenter = mPresenter)
+        mBinding.picsRecyclerView.swapAdapter(adapter, true)
     }
 
     override fun getPicsFromCache() : MutableLiveData<List<Pic>>{

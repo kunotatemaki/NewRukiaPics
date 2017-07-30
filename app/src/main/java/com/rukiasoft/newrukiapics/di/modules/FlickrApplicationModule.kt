@@ -12,9 +12,7 @@ import javax.inject.Singleton
  * Created by Roll on 28/7/17.
  */
 @Module
-class FlickrApplicationModule constructor(application: Application){
-
-    val application : Application = application
+class FlickrApplicationModule constructor(val application: Application){
 
     @Singleton
     @Provides
