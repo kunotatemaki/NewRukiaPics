@@ -3,6 +3,7 @@ package com.rukiasoft.newrukiapics.ui.activities
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.adapters.ListPicsAdapter
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
+import com.rukiasoft.newrukiapics.ui.viewmodel.ListPicsViewModel
 import com.rukiasoft.newrukiapics.utils.DisplayUtils
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
@@ -68,7 +70,7 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
         mBinding.picsRecyclerView.layoutManager = layout
 
-        //todo quitar esta inicializacion
+        //getPics
         val list = MutableLiveData<List<Pic>>()
         network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = list)
     }
@@ -86,8 +88,16 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         mBinding.picsRecyclerView.swapAdapter(adapter, true)
     }
 
-    override fun getPicsFromCache() : MutableLiveData<List<Pic>>{
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<List<Pic>> {
+        val viewModel = ViewModelProviders.of(this).get(ListPicsViewModel::class.java)
+        when(order){
+            FlickrConstants.Order.PUBLISHED -> {
+                return@getPicsFromCache viewModel.picsByPublishedDates
+            }
+            FlickrConstants.Order.TAKEN -> {
+                return@getPicsFromCache viewModel.picsByOrderedDates
+            }
+        }
     }
 
     override fun showToast(message: String) {

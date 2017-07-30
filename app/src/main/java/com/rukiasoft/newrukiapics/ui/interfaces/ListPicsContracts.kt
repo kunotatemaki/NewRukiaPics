@@ -21,7 +21,7 @@ interface ListPicsContracts {
 
         fun setPicsInUI(pics : List<Pic>)
 
-        fun getPicsFromCache() : MutableLiveData<List<Pic>>
+        fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<List<Pic>>
 
         fun showToast(message : String)
 
