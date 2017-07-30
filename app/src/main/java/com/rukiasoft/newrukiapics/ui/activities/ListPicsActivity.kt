@@ -70,7 +70,8 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
         mBinding.picsRecyclerView.layoutManager = layout
 
-        //getPics
+        //getPics from data or cache
+        mPresenter.setDataFromNetworkOrCache(getPicsFromCache())
         val list = MutableLiveData<List<Pic>>()
         network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = list)
     }

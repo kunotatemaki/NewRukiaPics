@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">NewRukiaPics</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_published">Last Published</string>
+    <string name="title_taken">Last Taken</string>
     <string name="pic_content_description">Image from Flickr</string>
 </resources>
