@@ -42,13 +42,14 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_home -> {
+            R.id.navigation_published -> {
+                ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSeletedOrder = FlickrConstants.Order.PUBLISHED
+                mPresenter.setDataFromNetworkOrCache(getPicsFromCache(order = FlickrConstants.Order.PUBLISHED))
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifications -> {
+            R.id.navigation_taken -> {
+                ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSeletedOrder = FlickrConstants.Order.TAKEN
+                mPresenter.setDataFromNetworkOrCache(getPicsFromCache(order = FlickrConstants.Order.TAKEN))
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -63,17 +64,22 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         //inject dependencies
         (application as FlickrApplication).mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
         //initialize recyclerview
         val columns : Int = DisplayUtils.calculateNoOfColumns(this.context)
         val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
-        mBinding.picsRecyclerView.layoutManager = layout
+        pics_recycler_view.layoutManager = layout
+
+        //set clicklistener for navigation
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        //force navigation on las state -> or published if first time
+        navigation.selectedItemId = getIdFromOrder(getSelectedOrder())
+
+
 
         //getPics from data or cache
-        mPresenter.setDataFromNetworkOrCache(getPicsFromCache())
+        //mPresenter.setDataFromNetworkOrCache(getPicsFromCache())
         val list = MutableLiveData<List<Pic>>()
-        network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = list)
+        //network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = list)
     }
 
     override fun showProgressBar() {
@@ -84,12 +90,12 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setPicsInUI(pics: List<Pic>) {
+    override fun setPicsInUI(pics: MutableList<Pic>) {
         val adapter = ListPicsAdapter(pics = pics, presenter = mPresenter)
-        mBinding.picsRecyclerView.swapAdapter(adapter, true)
+        pics_recycler_view.swapAdapter(adapter, true)
     }
 
-    override fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<List<Pic>> {
+    override fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>> {
         val viewModel = ViewModelProviders.of(this).get(ListPicsViewModel::class.java)
         when(order){
             FlickrConstants.Order.PUBLISHED -> {
@@ -115,6 +121,17 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     override fun registerObserver(observer: LifecycleObserver) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getSelectedOrder(): FlickrConstants.Order {
+        return ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSeletedOrder
+    }
+
+    private fun getIdFromOrder(order: FlickrConstants.Order) : Int{
+        when(order){
+            FlickrConstants.Order.PUBLISHED -> {return@getIdFromOrder R.id.navigation_published}
+            FlickrConstants.Order.TAKEN -> {return@getIdFromOrder R.id.navigation_taken}
+        }
     }
 
 }

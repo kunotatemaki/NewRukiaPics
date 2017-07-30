@@ -10,6 +10,6 @@ import java.util.*
  */
 interface NetworkManager {
 
-    fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<List<Pic>>)
+    fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<MutableList<Pic>>)
 
 }

@@ -19,9 +19,9 @@ interface ListPicsContracts {
 
         fun hideProgressBar()
 
-        fun setPicsInUI(pics : List<Pic>)
+        fun setPicsInUI(pics : MutableList<Pic>)
 
-        fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<List<Pic>>
+        fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>>
 
         fun showToast(message : String)
 
@@ -31,13 +31,15 @@ interface ListPicsContracts {
 
         fun getPresenter() : PresenterContracts
 
+        fun getSelectedOrder() : FlickrConstants.Order
+
     }
 
     interface PresenterContracts{
 
-        fun observerListOfPics(listOfPics: MutableLiveData<List<Pic>>)
+        fun observerListOfPics(listOfPics: MutableLiveData<MutableList<Pic>>)
 
-        fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<List<Pic>>)
+        fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>)
 
         fun cardClicked(view: View, pic: Pic)
 
@@ -45,7 +47,8 @@ interface ListPicsContracts {
 
         fun unbindView()
 
-        fun downloadPics(listOfPics: MutableLiveData<List<Pic>>, tags: String, order: FlickrConstants.Order)
+        fun downloadPics(listOfPics: MutableLiveData<MutableList<Pic>>, tags: String, order: FlickrConstants.Order)
+
     }
 
     interface ObserverContracts{

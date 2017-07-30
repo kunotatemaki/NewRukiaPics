@@ -1,9 +1,7 @@
 package com.rukiasoft.newrukiapics.network.implementations
 
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonElement
 import com.rukiasoft.newrukiapics.BuildConfig
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.model.PicsResponse
@@ -34,7 +32,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
     @Inject
     protected lateinit var log : LogHelper
 
-    override fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<List<Pic>>) {
+    override fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<MutableList<Pic>>) {
 
         var orderType : String = ""
         if (order == FlickrConstants.Order.PUBLISHED) {

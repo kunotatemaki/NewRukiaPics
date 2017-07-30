@@ -18,8 +18,8 @@ object FlickrConstants{
     val FLICKR_NO_JSON_CALLBACK = "nojsoncallback"
     val FLICKR_DELIMITER = ","
 
-    enum class Order {
-        PUBLISHED,
-        TAKEN
+    enum class Order(val value: Int) {
+        PUBLISHED(1),
+        TAKEN(2)
     }
 }

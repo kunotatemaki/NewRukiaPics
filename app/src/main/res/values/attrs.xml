@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="navigation_values">
+        <attr name="navigation_published_value" format= "integer"/>
+        <attr name="navigation_taken_value" format= "integer"/>
+    </declare-styleable>
+</resources>

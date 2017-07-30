@@ -23,9 +23,9 @@ class ListPicsObserver : LifecycleObserver, ListPicsContracts.ObserverContracts 
         log.d(this, "inyecto la vista en el presentador")
         mLifecycleOwner?.let { mLifecycleOwner?.getPresenter()?.bindView(it) }
         //observo la lista de usuarios
-        mLifecycleOwner?.getPresenter()?.observerListOfPics((mLifecycleOwner as ListPicsContracts.ViewContracts).getPicsFromCache())
+        //mLifecycleOwner?.getPresenter()?.observerListOfPics((mLifecycleOwner as ListPicsContracts.ViewContracts).getPicsFromCache())
         //pinto en la pantalla los usuarios
-        mLifecycleOwner?.getPresenter()?.setDataFromNetworkOrCache((mLifecycleOwner as ListPicsContracts.ViewContracts).getPicsFromCache())
+        //mLifecycleOwner?.getPresenter()?.setDataFromNetworkOrCache((mLifecycleOwner as ListPicsContracts.ViewContracts).getPicsFromCache())
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

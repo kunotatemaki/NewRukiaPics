@@ -1,12 +1,12 @@
 package com.rukiasoft.newrukiapics.ui.presenters
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
+import com.rukiasoft.newrukiapics.utils.LogHelper
 import javax.inject.Inject
 
 /**
@@ -19,15 +19,25 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     @Inject
     protected lateinit var network : NetworkManager
 
-    override fun downloadPics(listOfPics: MutableLiveData<List<Pic>>, tags: String, order: FlickrConstants.Order) {
+    @Inject
+    protected lateinit var log: LogHelper
+
+    override fun downloadPics(listOfPics: MutableLiveData<MutableList<Pic>>, tags: String, order: FlickrConstants.Order) {
         network?.getPics(tags = tags, order = order, listOfPics = listOfPics)
     }
 
-    override fun observerListOfPics(pic: MutableLiveData<List<Pic>>) {
+    override fun observerListOfPics(listOfPics: MutableLiveData<MutableList<Pic>>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setDataFromNetworkOrCache(pic: MutableLiveData<List<Pic>>) {
+    override fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>) {
+        if(listOfPics.value == null){
+            network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = listOfPics)
+        }else{
+            mView?.setPicsInUI(listOfPics.value!!)
+            log.d(this, "estaban en cache")
+        }
+
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -42,5 +52,6 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     override fun unbindView() {
         mView = null;
     }
+
 
 }
