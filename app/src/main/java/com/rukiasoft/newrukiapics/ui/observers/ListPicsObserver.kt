@@ -20,7 +20,7 @@ class ListPicsObserver  /*@Inject constructor()*/: LifecycleObserver, ListPicsCo
         view.registerObserver(this)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun injectViewInPresenterAndRegisterForListEvents() {
         val log = LogHelper()
         log.d(this, "inyecto la vista en el presentador")
@@ -34,18 +34,6 @@ class ListPicsObserver  /*@Inject constructor()*/: LifecycleObserver, ListPicsCo
                     .getPicsFromCache(FlickrConstants.Order.TAKEN))
         }
     }
-
-   /*@OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-   fun printListOfPicsOnScreen(){
-       mLifecycleOwner?.let {
-           mLifecycleOwner!!.getPresenter()
-                   .setDataFromNetworkOrCache(
-                           listOfPics = mLifecycleOwner!!.getPicsFromCache(
-                                order = mLifecycleOwner!!.getSelectedOrder()
-                           )
-                   )
-       }
-   }*/
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun removeActivityReferenceFromObserver() {

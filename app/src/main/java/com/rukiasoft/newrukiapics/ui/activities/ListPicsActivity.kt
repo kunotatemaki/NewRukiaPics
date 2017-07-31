@@ -74,8 +74,8 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         //set clicklistener for navigation
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         //force navigation to last state -> or published if first time
