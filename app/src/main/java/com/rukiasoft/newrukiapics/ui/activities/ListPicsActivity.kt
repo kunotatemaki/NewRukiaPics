@@ -62,6 +62,8 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         //inject dependencies
         (application as FlickrApplication).mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
+        //not allow refresh on swipe
+        swipe_refresh_layout.isEnabled = false
         //initialize recyclerview
         val columns : Int = DisplayUtils.calculateNoOfColumns(applicationContext)
         val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
@@ -92,7 +94,7 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     override fun setPicsInUI(pics: MutableList<Pic>) {
         val adapter = ListPicsAdapter(pics = pics, presenter = mPresenter)
-        pics_recycler_view.adapter =adapter
+        pics_recycler_view.swapAdapter(adapter,false)
     }
 
     override fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>> {

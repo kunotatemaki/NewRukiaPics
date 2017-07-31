@@ -41,7 +41,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
             orderType = "date-taken-desc"
         }
         //TODO "recuperar el número de fotos a devolver de las preferencias"
-        val nPicsToRequest = 10
+        val nPicsToRequest = 25
 
         //Creo el mapa con los parámetros
         val params = hashMapOf<String, String>()
