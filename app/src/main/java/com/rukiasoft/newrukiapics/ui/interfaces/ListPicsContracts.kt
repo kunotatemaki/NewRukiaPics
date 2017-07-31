@@ -53,6 +53,6 @@ interface ListPicsContracts {
 
     interface ObserverContracts{
 
-        fun registerInLifecyclerOwner(view: ViewContracts)
+        fun registerInLifecyclerOwner(lifecycleOwner: ViewContracts)
     }
 }

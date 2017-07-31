@@ -25,4 +25,5 @@ class ListPicsModule {
     fun providesObserver(observer: ListPicsObserver) : ListPicsContracts.ObserverContracts{
         return observer
     }
+
 }

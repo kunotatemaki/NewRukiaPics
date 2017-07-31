@@ -4,7 +4,6 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -33,7 +32,7 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     protected lateinit var mPresenter : ListPicsContracts.PresenterContracts
 
     @Inject
-    protected lateinit var context : Context
+    protected lateinit var mObserver : ListPicsContracts.ObserverContracts
 
     @Inject
     protected lateinit var log : LogHelper
@@ -65,21 +64,23 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         (application as FlickrApplication).mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
         //initialize recyclerview
-        val columns : Int = DisplayUtils.calculateNoOfColumns(this.context)
+        val columns : Int = DisplayUtils.calculateNoOfColumns(applicationContext)
         val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
         pics_recycler_view.layoutManager = layout
 
+        //subscribe presenter to events
+        mPresenter.observerListOfPics(getPicsFromCache(FlickrConstants.Order.PUBLISHED))
+        mPresenter.observerListOfPics(getPicsFromCache(FlickrConstants.Order.TAKEN))
+
+        //observer
+        mObserver.registerInLifecyclerOwner(this)
+
         //set clicklistener for navigation
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        //force navigation on las state -> or published if first time
+        //force navigation to last state -> or published if first time
         navigation.selectedItemId = getIdFromOrder(getSelectedOrder())
 
 
-
-        //getPics from data or cache
-        //mPresenter.setDataFromNetworkOrCache(getPicsFromCache())
-        val list = MutableLiveData<List<Pic>>()
-        //network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = list)
     }
 
     override fun showProgressBar() {
