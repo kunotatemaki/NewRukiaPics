@@ -30,7 +30,7 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     @Inject
     protected lateinit var mPresenter : ListPicsContracts.PresenterContracts
 
-    //@Inject
+    @Inject
     protected lateinit var mObserver : ListPicsContracts.ObserverContracts
 
     @Inject
@@ -71,7 +71,6 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         pics_recycler_view.setHasFixedSize(true)
 
         //observer
-        mObserver = ListPicsObserver()
         mObserver.registerInLifecyclerOwner(this)
 
     }

@@ -3,6 +3,7 @@ package com.rukiasoft.newrukiapics.ui.presenters
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.view.View
+import com.rukiasoft.newrukiapics.di.scope.CustomScopes
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
@@ -13,6 +14,7 @@ import javax.inject.Inject
 /**
  * Created by Roll on 28/7/17.
  */
+@CustomScopes.ListPicsScope
 class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContracts {
 
     private var mView : ListPicsContracts.ViewContracts? = null

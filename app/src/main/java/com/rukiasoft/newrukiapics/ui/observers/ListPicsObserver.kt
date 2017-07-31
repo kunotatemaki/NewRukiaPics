@@ -3,6 +3,7 @@ package com.rukiasoft.newrukiapics.ui.observers
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import com.rukiasoft.newrukiapics.di.scope.CustomScopes
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
@@ -11,7 +12,8 @@ import javax.inject.Inject
 /**
  * Created by Roll on 28/7/17.
  */
-class ListPicsObserver  /*@Inject constructor()*/: LifecycleObserver, ListPicsContracts.ObserverContracts {
+@CustomScopes.ListPicsScope
+class ListPicsObserver  @Inject constructor(): LifecycleObserver, ListPicsContracts.ObserverContracts {
 
     private var mLifecycleOwner : ListPicsContracts.ViewContracts? = null
 
