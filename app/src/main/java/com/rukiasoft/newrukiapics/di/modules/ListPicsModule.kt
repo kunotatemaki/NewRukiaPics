@@ -20,10 +20,10 @@ class ListPicsModule {
         return presenter
     }
 
-    @Provides
+    /*@Provides
     @CustomScopes.ListPicsScope
     fun providesObserver(observer: ListPicsObserver) : ListPicsContracts.ObserverContracts{
         return observer
-    }
+    }*/
 
 }

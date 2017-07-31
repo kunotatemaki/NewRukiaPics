@@ -41,7 +41,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
             orderType = "date-taken-desc"
         }
         //TODO "recuperar el número de fotos a devolver de las preferencias"
-        val nPicsToRequest = 5
+        val nPicsToRequest = 10
 
         //Creo el mapa con los parámetros
         val params = hashMapOf<String, String>()
@@ -61,7 +61,6 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
         val call : Call<FlickrResponse> = flickEndpoints.getPics(params)
         call.enqueue(object : Callback<FlickrResponse> {
             override fun onResponse(call: Call<FlickrResponse>?, response: Response<FlickrResponse>?) {
-
                 if (response?.isSuccessful as Boolean) {
                     val photos = response.body()
                             ?.photos
@@ -77,13 +76,6 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
 
                     log.d(NetworkManagerImpl::class.java, list.size.toString())
                     listOfPics.value = list
-                    if(order == FlickrConstants.Order.PUBLISHED) {
-                        log.d(NetworkManagerImpl::class.java, "PUBLISHER")
-                    } else if (order == FlickrConstants.Order.TAKEN) {
-                        log.d(NetworkManagerImpl::class.java, "TAKEN")
-                    }
-
-
                 } else {
                     //todo mostrar mensaje de error
                     log.d(NetworkManagerImpl::class.java, "a ver qué sale")

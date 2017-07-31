@@ -1,6 +1,7 @@
 package com.rukiasoft.newrukiapics.ui.presenters
 
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.view.View
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
@@ -27,18 +28,25 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     }
 
     override fun observerListOfPics(listOfPics: MutableLiveData<MutableList<Pic>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mView?.let {
+            listOfPics.observe(mView!!.getLifecycleOwner(), Observer {
+                log.d(this, "callback en presenter")
+                listOfPics.value?.let {
+                    mView!!.setPicsInUI(pics = listOfPics.value!!)
+                }
+            })
+        }
     }
 
     override fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>) {
-        if(listOfPics.value == null){
-            network.getPics(tags = "perros", order = FlickrConstants.Order.PUBLISHED, listOfPics = listOfPics)
-        }else{
-            mView?.setPicsInUI(listOfPics.value!!)
-            log.d(this, "estaban en cache")
+        mView?.let {
+            if (listOfPics.value == null) {
+                downloadPics(listOfPics = listOfPics, tags = "perros", order = mView!!.getSelectedOrder())
+            } else {
+                mView!!.setPicsInUI(listOfPics.value!!)
+                log.d(this, "estaban en cache")
+            }
         }
-
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun cardClicked(view: View, pic: Pic) {

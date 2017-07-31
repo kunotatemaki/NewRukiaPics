@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.view.View
 import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
 import com.rukiasoft.newrukiapics.databinding.ListPicsActivityBinding
@@ -16,6 +17,7 @@ import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.adapters.ListPicsAdapter
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
+import com.rukiasoft.newrukiapics.ui.observers.ListPicsObserver
 import com.rukiasoft.newrukiapics.ui.viewmodel.ListPicsViewModel
 import com.rukiasoft.newrukiapics.utils.DisplayUtils
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
@@ -26,12 +28,9 @@ import javax.inject.Inject
 class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
     @Inject
-    protected lateinit var network : NetworkManager
-
-    @Inject
     protected lateinit var mPresenter : ListPicsContracts.PresenterContracts
 
-    @Inject
+    //@Inject
     protected lateinit var mObserver : ListPicsContracts.ObserverContracts
 
     @Inject
@@ -42,12 +41,12 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_published -> {
-                ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSeletedOrder = FlickrConstants.Order.PUBLISHED
+                ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSelectedOrder = FlickrConstants.Order.PUBLISHED
                 mPresenter.setDataFromNetworkOrCache(getPicsFromCache(order = FlickrConstants.Order.PUBLISHED))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_taken -> {
-                ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSeletedOrder = FlickrConstants.Order.TAKEN
+                ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSelectedOrder = FlickrConstants.Order.TAKEN
                 mPresenter.setDataFromNetworkOrCache(getPicsFromCache(order = FlickrConstants.Order.TAKEN))
                 return@OnNavigationItemSelectedListener true
             }
@@ -67,33 +66,33 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         val columns : Int = DisplayUtils.calculateNoOfColumns(applicationContext)
         val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
         pics_recycler_view.layoutManager = layout
-
-        //subscribe presenter to events
-        mPresenter.observerListOfPics(getPicsFromCache(FlickrConstants.Order.PUBLISHED))
-        mPresenter.observerListOfPics(getPicsFromCache(FlickrConstants.Order.TAKEN))
+        pics_recycler_view.setHasFixedSize(true)
 
         //observer
+        mObserver = ListPicsObserver()
         mObserver.registerInLifecyclerOwner(this)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         //set clicklistener for navigation
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         //force navigation to last state -> or published if first time
         navigation.selectedItemId = getIdFromOrder(getSelectedOrder())
-
-
     }
 
     override fun showProgressBar() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        swipe_refresh_layout.visibility = View.VISIBLE
     }
 
     override fun hideProgressBar() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        swipe_refresh_layout.visibility = View.INVISIBLE
     }
 
     override fun setPicsInUI(pics: MutableList<Pic>) {
         val adapter = ListPicsAdapter(pics = pics, presenter = mPresenter)
-        pics_recycler_view.swapAdapter(adapter, true)
+        pics_recycler_view.adapter =adapter
     }
 
     override fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>> {
@@ -121,11 +120,11 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     }
 
     override fun registerObserver(observer: LifecycleObserver) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        getLifecycle().addObserver(observer)
     }
 
     override fun getSelectedOrder(): FlickrConstants.Order {
-        return ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSeletedOrder
+        return ViewModelProviders.of(this).get(ListPicsViewModel::class.java).lastSelectedOrder
     }
 
     private fun getIdFromOrder(order: FlickrConstants.Order) : Int{

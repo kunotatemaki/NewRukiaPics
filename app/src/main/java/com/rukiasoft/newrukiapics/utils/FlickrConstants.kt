@@ -5,7 +5,7 @@ package com.rukiasoft.newrukiapics.utils
  */
 object FlickrConstants{
 
-    val BASE_URL : String = "https://api.flickr.com/services/rest/";
+    val BASE_URL : String = "https://api.flickr.com/services/rest/"
 
     val FLICKR_METHOD : String = "method"
     val FLICKR_API_KEY = "api_key"

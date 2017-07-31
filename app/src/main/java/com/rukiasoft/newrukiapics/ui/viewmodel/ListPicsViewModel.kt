@@ -8,9 +8,9 @@ import com.rukiasoft.newrukiapics.utils.FlickrConstants
 /**
  * Created by Roll on 28/7/17.
  */
-class ListPicsViewModel: ViewModel() {
+class ListPicsViewModel : ViewModel() {
 
-    var lastSeletedOrder: FlickrConstants.Order = FlickrConstants.Order.PUBLISHED
-    lateinit var picsByPublishedDates: MutableLiveData<MutableList<Pic>>
-    lateinit var picsByOrderedDates: MutableLiveData<MutableList<Pic>>
+    var lastSelectedOrder: FlickrConstants.Order = FlickrConstants.Order.PUBLISHED
+    var picsByOrderedDates: MutableLiveData<MutableList<Pic>> = MutableLiveData()
+    var picsByPublishedDates: MutableLiveData<MutableList<Pic>> = MutableLiveData()
 }

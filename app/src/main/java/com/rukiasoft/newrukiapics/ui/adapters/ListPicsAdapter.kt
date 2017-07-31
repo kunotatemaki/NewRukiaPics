@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.rukiasoft.newrukiapics.databinding.PicItemBinding
 import com.rukiasoft.newrukiapics.model.Pic
+import com.rukiasoft.newrukiapics.ui.bindingadapters.GlideBindingComponent
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
 import com.rukiasoft.newrukiapics.ui.viewholders.PicViewHolder
 
@@ -18,8 +19,7 @@ RecyclerView.Adapter<PicViewHolder>(){
         val inflater = LayoutInflater.from(parent?.context)
         val binding = PicItemBinding.inflate(
                 inflater,
-                parent,
-                false
+                GlideBindingComponent()
         )
 
         return PicViewHolder(binding)
