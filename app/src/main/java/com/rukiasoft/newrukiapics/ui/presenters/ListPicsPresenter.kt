@@ -53,8 +53,11 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
         }
     }
 
-    override fun cardClicked(view: View, pic: Pic) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun picClicked(view: View, pic: Pic) {
+        log.d(this, "pulsada la foto: " + pic.picUrl)
+        mView?.let {
+            mView!!.showPicDetails(pic)
+        }
     }
 
     override fun bindView(view: ListPicsContracts.ViewContracts) {

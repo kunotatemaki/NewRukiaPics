@@ -4,14 +4,18 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
+import com.rukiasoft.newrukiapics.BR
 import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
 import com.rukiasoft.newrukiapics.databinding.ListPicsActivityBinding
+import com.rukiasoft.newrukiapics.databinding.PicDetailsBinding
 import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.ui.adapters.ListPicsAdapter
@@ -23,6 +27,7 @@ import com.rukiasoft.newrukiapics.utils.LogHelper
 import kotlinx.android.synthetic.main.content_list_pics_activity.view.*
 import kotlinx.android.synthetic.main.list_pics_activity.*
 import javax.inject.Inject
+
 
 class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
 
@@ -144,6 +149,19 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
             FlickrConstants.Order.PUBLISHED -> {return@getIdFromOrder R.id.navigation_published}
             FlickrConstants.Order.TAKEN -> {return@getIdFromOrder R.id.navigation_taken}
         }
+    }
+
+    override fun showPicDetails(pic: Pic) {
+        val builder = AlertDialog.Builder(this)
+        val detailsBinding = PicDetailsBinding.inflate(layoutInflater)
+        detailsBinding.setVariable(BR.pic, pic)
+        builder.setView(detailsBinding.root)
+                .setNegativeButton(getString(R.string.close), DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                })
+        //store reference to dialog
+        val dialog = builder.create()
+        dialog.show()
     }
 
 }

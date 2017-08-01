@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="@string/pic_content_description"
-            android:src="@{pic.picUrl}"/>
+            android:src="@{pic.picUrl}"
+            android:onClick="@{(theView)->presenter.picClicked(theView, pic)}"/>
 
     </android.support.constraint.ConstraintLayout>
 

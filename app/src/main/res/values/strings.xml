@@ -3,4 +3,8 @@
     <string name="title_published">Last Published</string>
     <string name="title_taken">Last Taken</string>
     <string name="pic_content_description">Image from Flickr</string>
+    <string name="by">By:</string>
+    <string name="date_published">Published:</string>
+    <string name="date_taken">Taken</string>
+    <string name="close">Close</string>
 </resources>

@@ -33,6 +33,8 @@ interface ListPicsContracts {
 
         fun getSelectedOrder() : FlickrConstants.Order
 
+        fun showPicDetails(pic: Pic)
+
     }
 
     interface PresenterContracts{
@@ -41,7 +43,7 @@ interface ListPicsContracts {
 
         fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>)
 
-        fun cardClicked(view: View, pic: Pic)
+        fun picClicked(view: View, pic: Pic)
 
         fun bindView(view: ViewContracts)
 

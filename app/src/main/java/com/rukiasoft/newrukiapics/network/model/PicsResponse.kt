@@ -18,7 +18,7 @@ class PicsResponse {
     private val owner: String? = null
     @SerializedName("ownername")
     @Expose
-    private val ownername: String? = null
+    val ownername: String? = null
     @SerializedName("secret")
     @Expose
     private val secret: String? = null
@@ -30,7 +30,7 @@ class PicsResponse {
     private val farm: Int? = null
     @SerializedName("title")
     @Expose
-    private val title: String? = null
+    val title: String? = null
     @SerializedName("ispublic")
     @Expose
     private val ispublic: Int? = null
@@ -42,10 +42,10 @@ class PicsResponse {
     private val isfamily: Int? = null
     @SerializedName("dateupload")
     @Expose
-    private val dateupload: String? = null
+    val dateupload: String? = null
     @SerializedName("datetaken")
     @Expose
-    private val datetaken: String? = null
+    val datetaken: String? = null
     @SerializedName("datetakengranularity")
     @Expose
     private val datetakengranularity: String? = null
