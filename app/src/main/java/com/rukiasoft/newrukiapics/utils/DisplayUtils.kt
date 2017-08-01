@@ -7,8 +7,7 @@ import android.graphics.Point
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.WindowManager
-
-
+import android.view.inputmethod.InputMethodManager
 
 
 /**
@@ -38,5 +37,16 @@ object DisplayUtils {
         (context as Activity).windowManager.defaultDisplay.getSize(size)
         return size.x
     }
+
+    fun hideSoftKeyboard(activity: Activity) {
+        try {
+            val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+            inputMethodManager?.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
 
 }

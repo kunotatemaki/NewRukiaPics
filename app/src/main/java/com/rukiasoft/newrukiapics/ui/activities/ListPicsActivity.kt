@@ -62,12 +62,11 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.list_pics_activity)
-
         //inject dependencies
         (application as FlickrApplication).mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
-        //set toolbar
-        setToolbar(toolbar = list_toolbar, backArrow = false)
+        mBinding.setVariable(BR.presenter, mPresenter)
+
         //not allow refresh on swipe
         //list_content.swipe_refresh_layout.isEnabled = false
         //initialize recyclerview
@@ -156,12 +155,27 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         val detailsBinding = PicDetailsBinding.inflate(layoutInflater)
         detailsBinding.setVariable(BR.pic, pic)
         builder.setView(detailsBinding.root)
-                .setNegativeButton(getString(R.string.close), DialogInterface.OnClickListener { dialog, id ->
+                .setNegativeButton(getString(R.string.close), { dialog, _ ->
                     dialog.cancel()
                 })
         //store reference to dialog
         val dialog = builder.create()
         dialog.show()
+    }
+
+    override fun getTags(): String{
+        return ViewModelProviders.of(this).get(ListPicsViewModel::class.java).tags
+    }
+
+    override fun setTags(tags: String){
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).tags = tags
+    }
+
+    override fun cleanData(){
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).picsByOrderedDates.value = null
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).picsByPublishedDates.value = null
+        DisplayUtils.hideSoftKeyboard(this)
+
     }
 
 }

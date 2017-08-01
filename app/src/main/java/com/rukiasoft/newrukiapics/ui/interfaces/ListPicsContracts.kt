@@ -35,6 +35,12 @@ interface ListPicsContracts {
 
         fun showPicDetails(pic: Pic)
 
+        fun getTags(): String
+
+        fun setTags(tags: String)
+
+        fun cleanData()
+
     }
 
     interface PresenterContracts{
@@ -50,6 +56,8 @@ interface ListPicsContracts {
         fun unbindView()
 
         fun downloadPics(listOfPics: MutableLiveData<MutableList<Pic>>, tags: String, order: FlickrConstants.Order)
+
+        fun downloadPicsFromSearch(tags: String):Boolean
 
     }
 

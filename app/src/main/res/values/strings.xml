@@ -7,4 +7,6 @@
     <string name="date_published">Published:</string>
     <string name="date_taken">Taken</string>
     <string name="close">Close</string>
+    <string name="search">Search</string>
+    <string name="search_hint">tags separated by comma</string>
 </resources>

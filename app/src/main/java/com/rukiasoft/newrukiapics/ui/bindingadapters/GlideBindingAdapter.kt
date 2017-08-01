@@ -11,15 +11,17 @@ import com.rukiasoft.newrukiapics.utils.DisplayUtils
  */
 class GlideBindingAdapter {
     @BindingAdapter("android:src")
-    fun setImageUrl(view: ImageView, url: String) {
+    fun setImageUrl(view: ImageView, url: String?) {
         //square images
-        val width = DisplayUtils.getScreenWidth(view.context)/2
+        url?.let {
+            val width = DisplayUtils.getScreenWidth(view.context) / 2
 
-        Glide.with(view.context)
-            .load(url)
-            .apply(RequestOptions()
-                    .override(width, width)
-                    .centerCrop())
-            .into(view)
+            Glide.with(view.context)
+                    .load(url)
+                    .apply(RequestOptions()
+                            .override(width, width)
+                            .centerCrop())
+                    .into(view)
+        }
     }
 }

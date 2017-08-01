@@ -7,6 +7,7 @@ import com.rukiasoft.newrukiapics.di.scope.CustomScopes
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
+import com.rukiasoft.newrukiapics.utils.DisplayUtils
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
 import javax.inject.Inject
@@ -26,7 +27,20 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     protected lateinit var log: LogHelper
 
     override fun downloadPics(listOfPics: MutableLiveData<MutableList<Pic>>, tags: String, order: FlickrConstants.Order) {
-        network?.getPics(tags = tags, order = order, listOfPics = listOfPics)
+        mView?.let {
+            mView!!.setTags(tags)
+        }
+        network.getPics(tags = tags, order = order, listOfPics = listOfPics)
+    }
+
+    override fun downloadPicsFromSearch(tags: String):Boolean {
+        mView?.let {
+            mView!!.cleanData()
+            val order = mView!!.getSelectedOrder()
+            val listOfPics = mView!!.getPicsFromCache(order)
+            downloadPics(listOfPics, tags, order)
+        }
+        return true
     }
 
     override fun observerListOfPics(listOfPics: MutableLiveData<MutableList<Pic>>) {
@@ -45,7 +59,7 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
         mView?.let {
             if (listOfPics.value == null) {
                 mView!!.showProgressBar()
-                downloadPics(listOfPics = listOfPics, tags = "perros", order = mView!!.getSelectedOrder())
+                downloadPics(listOfPics = listOfPics, tags = mView!!.getTags(), order = mView!!.getSelectedOrder())
             } else {
                 mView!!.setPicsInUI(listOfPics.value!!)
                 log.d(this, "estaban en cache")
@@ -61,11 +75,11 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     }
 
     override fun bindView(view: ListPicsContracts.ViewContracts) {
-        mView = view;
+        mView = view
     }
 
     override fun unbindView() {
-        mView = null;
+        mView = null
     }
 
 

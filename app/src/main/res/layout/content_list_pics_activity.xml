@@ -11,11 +11,15 @@
         tools:context="com.rukiasoft.newrukiapics.ui.activities.ListPicsActivity">
 
         <android.support.v7.widget.RecyclerView
-                android:id="@+id/pics_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:scrollbarStyle="insideInset" />
+            android:id="@+id/pics_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:scrollbarStyle="insideInset"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <ProgressBar
             android:id="@+id/list_progressbar"
             style="?android:attr/progressBarStyle"
@@ -37,7 +41,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/navigation" />
+            app:menu="@menu/navigation"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

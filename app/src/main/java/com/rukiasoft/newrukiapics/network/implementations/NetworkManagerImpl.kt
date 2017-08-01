@@ -62,16 +62,13 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
         call.enqueue(object : Callback<FlickrResponse> {
             override fun onResponse(call: Call<FlickrResponse>?, response: Response<FlickrResponse>?) {
                 if (response?.isSuccessful as Boolean) {
-                    val photos = response.body()
-                            ?.photos
-                            ?.get("photo")
-                            ?.asJsonArray
                     val list : MutableList<Pic> = arrayListOf()
                     //map photos to observable value
-                    if (photos != null) {
-                        photos.mapTo(list) {
-                            Pic(Gson().fromJson<PicsResponse>(it, PicsResponse::class.java))
-                        }
+                    response.body()
+                            ?.photos
+                            ?.get("photo")
+                            ?.asJsonArray?.mapTo(list) {
+                        Pic(Gson().fromJson<PicsResponse>(it, PicsResponse::class.java))
                     }
 
                     log.d(NetworkManagerImpl::class.java, list.size.toString())

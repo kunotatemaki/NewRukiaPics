@@ -12,6 +12,7 @@ class ListPicsViewModel : ViewModel() {
 
     var lastSelectedOrder: FlickrConstants.Order = FlickrConstants.Order.PUBLISHED
     var showRefresh : Boolean = false
+    var tags : String = ""
     var picsByOrderedDates: MutableLiveData<MutableList<Pic>> = MutableLiveData()
     var picsByPublishedDates: MutableLiveData<MutableList<Pic>> = MutableLiveData()
 }
