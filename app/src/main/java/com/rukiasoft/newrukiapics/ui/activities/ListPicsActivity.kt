@@ -5,11 +5,14 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
 import android.content.DialogInterface
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.GridLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.rukiasoft.newrukiapics.BR
 import com.rukiasoft.newrukiapics.FlickrApplication
@@ -94,6 +97,11 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
             true -> showProgressBar()
             false -> hideProgressBar()
         }
+    }
+
+    fun showSettings(view: View) {
+        intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
     }
 
     override fun showProgressBar() {

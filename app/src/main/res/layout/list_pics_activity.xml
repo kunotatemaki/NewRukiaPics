@@ -19,14 +19,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
-            <SearchView
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/settings"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="pin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_settings_white_24dp"
+                android:onClick="showSettings"/>
+            <SearchView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/settings"
                 android:queryHint="@string/search_hint"
                 android:src="@drawable/ic_search_white_24dp"
                 android:onQueryTextSubmit="@{(tags)->presenter.downloadPicsFromSearch(tags)}"
                 />
+            </android.support.constraint.ConstraintLayout>
         </android.support.design.widget.AppBarLayout>
 
 
