@@ -103,7 +103,7 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     }
 
     override fun hideProgressBar() {
-        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).showRefresh = true
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).showRefresh = false
         list_content.list_progressbar.visibility = View.INVISIBLE
     }
 
