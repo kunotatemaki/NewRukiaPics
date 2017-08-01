@@ -33,6 +33,7 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
         mView?.let {
             listOfPics.observe(mView!!.getLifecycleOwner(), Observer {
                 log.d(this, "callback en presenter")
+                mView!!.hideProgressBar()
                 listOfPics.value?.let {
                     mView!!.setPicsInUI(pics = listOfPics.value!!)
                 }
@@ -43,6 +44,7 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     override fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>) {
         mView?.let {
             if (listOfPics.value == null) {
+                mView!!.showProgressBar()
                 downloadPics(listOfPics = listOfPics, tags = "perros", order = mView!!.getSelectedOrder())
             } else {
                 mView!!.setPicsInUI(listOfPics.value!!)

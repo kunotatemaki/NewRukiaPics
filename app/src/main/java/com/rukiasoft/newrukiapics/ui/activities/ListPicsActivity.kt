@@ -8,21 +8,19 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import com.rukiasoft.newrukiapics.FlickrApplication
 import com.rukiasoft.newrukiapics.R
 import com.rukiasoft.newrukiapics.databinding.ListPicsActivityBinding
 import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
 import com.rukiasoft.newrukiapics.model.Pic
-import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.adapters.ListPicsAdapter
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
-import com.rukiasoft.newrukiapics.ui.observers.ListPicsObserver
 import com.rukiasoft.newrukiapics.ui.viewmodel.ListPicsViewModel
 import com.rukiasoft.newrukiapics.utils.DisplayUtils
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
+import kotlinx.android.synthetic.main.content_list_pics_activity.view.*
 import kotlinx.android.synthetic.main.list_pics_activity.*
 import javax.inject.Inject
 
@@ -63,13 +61,15 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         //inject dependencies
         (application as FlickrApplication).mComponent.getListActivityComponent(ListPicsModule()).inject(this)
 
+        //set toolbar
+        setToolbar(toolbar = list_toolbar, backArrow = false)
         //not allow refresh on swipe
-        swipe_refresh_layout.isEnabled = false
+        //list_content.swipe_refresh_layout.isEnabled = false
         //initialize recyclerview
         val columns : Int = DisplayUtils.calculateNoOfColumns(applicationContext)
         val layout = GridLayoutManager(applicationContext, columns, GridLayoutManager.VERTICAL, false)
-        pics_recycler_view.layoutManager = layout
-        pics_recycler_view.setHasFixedSize(true)
+        list_content.pics_recycler_view.layoutManager = layout
+        list_content.pics_recycler_view.setHasFixedSize(true)
 
         //observer
         mObserver.registerInLifecyclerOwner(this)
@@ -79,22 +79,32 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     override fun onStart() {
         super.onStart()
         //set clicklistener for navigation
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        list_content.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         //force navigation to last state -> or published if first time
-        navigation.selectedItemId = getIdFromOrder(getSelectedOrder())
+        list_content.navigation.selectedItemId = getIdFromOrder(getSelectedOrder())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when(ViewModelProviders.of(this).get(ListPicsViewModel::class.java).showRefresh){
+            true -> showProgressBar()
+            false -> hideProgressBar()
+        }
     }
 
     override fun showProgressBar() {
-        swipe_refresh_layout.visibility = View.VISIBLE
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).showRefresh = true
+        list_content.list_progressbar.visibility = View.VISIBLE
     }
 
     override fun hideProgressBar() {
-        swipe_refresh_layout.visibility = View.INVISIBLE
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).showRefresh = true
+        list_content.list_progressbar.visibility = View.INVISIBLE
     }
 
     override fun setPicsInUI(pics: MutableList<Pic>) {
         val adapter = ListPicsAdapter(pics = pics, presenter = mPresenter)
-        pics_recycler_view.swapAdapter(adapter,false)
+        list_content.pics_recycler_view.swapAdapter(adapter,false)
     }
 
     override fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>> {
@@ -122,7 +132,7 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     }
 
     override fun registerObserver(observer: LifecycleObserver) {
-        getLifecycle().addObserver(observer)
+        lifecycle.addObserver(observer)
     }
 
     override fun getSelectedOrder(): FlickrConstants.Order {
