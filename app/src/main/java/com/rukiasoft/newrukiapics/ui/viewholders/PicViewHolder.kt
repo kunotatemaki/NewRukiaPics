@@ -5,10 +5,6 @@ import com.rukiasoft.newrukiapics.BR
 import com.rukiasoft.newrukiapics.databinding.PicItemBinding
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
-import com.bumptech.glide.request.RequestOptions.circleCropTransform
-import com.bumptech.glide.Glide
-import android.databinding.BindingAdapter
-import android.widget.ImageView
 
 
 /**
@@ -19,7 +15,7 @@ class PicViewHolder(val binding: PicItemBinding) : RecyclerView.ViewHolder(bindi
     fun bind(pic: Pic, presenter: ListPicsContracts.PresenterContracts) {
         binding.setVariable(BR.pic, pic)
         binding.setVariable(BR.presenter, presenter)
-        binding.cardviewItem.tag = pic
+        binding.picRecyclerItem.tag = pic
         binding.executePendingBindings()
     }
 

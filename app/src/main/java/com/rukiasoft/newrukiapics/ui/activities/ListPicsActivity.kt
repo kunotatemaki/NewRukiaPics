@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import com.rukiasoft.newrukiapics.FlickrApplication
@@ -66,7 +67,7 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         swipe_refresh_layout.isEnabled = false
         //initialize recyclerview
         val columns : Int = DisplayUtils.calculateNoOfColumns(applicationContext)
-        val layout = StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL)
+        val layout = GridLayoutManager(applicationContext, columns, GridLayoutManager.VERTICAL, false)
         pics_recycler_view.layoutManager = layout
         pics_recycler_view.setHasFixedSize(true)
 
