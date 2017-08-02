@@ -3,6 +3,8 @@ package com.rukiasoft.newrukiapics.di.modules
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.rukiasoft.newrukiapics.preferences.implementations.PreferencesManagerImpl
+import com.rukiasoft.newrukiapics.preferences.interfaces.PreferencesManager
 import com.rukiasoft.newrukiapics.utils.LogHelper
 import dagger.Module
 import dagger.Provides
@@ -24,5 +26,11 @@ class FlickrApplicationModule constructor(val application: Application){
     @Provides
     fun providesLogHelper() : LogHelper{
         return LogHelper()
+    }
+
+    @Singleton
+    @Provides
+    fun providesPreferenceManager(prefs: PreferencesManagerImpl): PreferencesManager{
+        return prefs
     }
 }

@@ -8,6 +8,7 @@ import com.rukiasoft.newrukiapics.model.PicsResponse
 import com.rukiasoft.newrukiapics.network.endpoints.FlickrEndpoints
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.network.model.FlickrResponse
+import com.rukiasoft.newrukiapics.preferences.interfaces.PreferencesManager
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
 import retrofit2.Call
@@ -32,6 +33,9 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
     @Inject
     protected lateinit var log : LogHelper
 
+    @Inject
+    protected lateinit var prefs: PreferencesManager
+
     override fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<MutableList<Pic>>) {
 
         var orderType : String = ""
@@ -41,7 +45,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
             orderType = "date-taken-desc"
         }
         //TODO "recuperar el número de fotos a devolver de las preferencias"
-        val nPicsToRequest = 25
+        val nPicsToRequest = prefs.getNumberOfPicsToDownload()
 
         //Creo el mapa con los parámetros
         val params = hashMapOf<String, String>()
