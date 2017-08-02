@@ -9,6 +9,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
@@ -131,8 +132,9 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         }
     }
 
-    override fun showToast(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showNoDataFromNetwork() {
+        val message = getString(R.string.no_response_from_network)
+        Snackbar.make(mBinding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     override fun getLifecycleOwner() : LifecycleOwner {

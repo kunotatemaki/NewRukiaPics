@@ -23,7 +23,7 @@ interface ListPicsContracts {
 
         fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>>
 
-        fun showToast(message : String)
+        fun showNoDataFromNetwork()
 
         fun getLifecycleOwner() : LifecycleOwner
 

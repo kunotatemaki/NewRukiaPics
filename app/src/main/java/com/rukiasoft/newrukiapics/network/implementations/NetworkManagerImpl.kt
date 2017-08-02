@@ -44,7 +44,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
         } else if (order == FlickrConstants.Order.TAKEN) {
             orderType = "date-taken-desc"
         }
-        //TODO "recuperar el número de fotos a devolver de las preferencias"
+
         val nPicsToRequest = prefs.getNumberOfPicsToDownload()
 
         //Creo el mapa con los parámetros
@@ -78,14 +78,14 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
                     log.d(NetworkManagerImpl::class.java, list.size.toString())
                     listOfPics.value = list
                 } else {
-                    //todo mostrar mensaje de error
+                    listOfPics.value = null
                     log.d(NetworkManagerImpl::class.java, "a ver qué sale")
                 }
             }
 
             override fun onFailure(call: Call<FlickrResponse>?, t: Throwable?) {
-                //todo mostrar mensaje de error
                 log.d(NetworkManagerImpl::class.java, t?.message.toString())
+                listOfPics.value = null
             }
         })
 

@@ -49,6 +49,9 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
                 log.d(this, "callback en presenter")
                 mView!!.hideProgressBar()
                 listOfPics.value?.let {
+                    when(listOfPics.value!!.isEmpty()){
+                        true -> mView!!.showNoDataFromNetwork()
+                    }
                     mView!!.setPicsInUI(pics = listOfPics.value!!)
                 }
             })
