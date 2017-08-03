@@ -58,6 +58,10 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
         }
     }
 
+    private fun handleChangesInListOfPics(MutableLiveData<MutableList<Pic>>){
+
+    }
+
     override fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>) {
         mView?.let {
             if (listOfPics.value == null) {

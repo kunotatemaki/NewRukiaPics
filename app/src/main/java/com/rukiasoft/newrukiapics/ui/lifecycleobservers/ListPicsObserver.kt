@@ -1,4 +1,4 @@
-package com.rukiasoft.newrukiapics.ui.observers
+package com.rukiasoft.newrukiapics.ui.lifecycleobservers
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
@@ -44,4 +44,17 @@ class ListPicsObserver  @Inject constructor(): LifecycleObserver, ListPicsContra
         mLifecycleOwner?.getPresenter()?.unbindView()
         mLifecycleOwner = null
     }
+
+    override fun addObserverToListOfTakenPics() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun addObserverToListOfPublishedPics() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun addObserverToListOfPics(){
+
+    }
+
 }

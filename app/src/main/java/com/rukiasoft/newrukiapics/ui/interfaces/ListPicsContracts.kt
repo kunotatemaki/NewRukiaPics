@@ -64,5 +64,9 @@ interface ListPicsContracts {
     interface ObserverContracts{
 
         fun registerInLifecyclerOwner(lifecycleOwner: ViewContracts)
+
+        fun addObserverToListOfPublishedPics()
+
+        fun addObserverToListOfTakenPics()
     }
 }

@@ -2,7 +2,7 @@ package com.rukiasoft.newrukiapics.di.modules
 
 import com.rukiasoft.newrukiapics.di.scope.CustomScopes
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
-import com.rukiasoft.newrukiapics.ui.observers.ListPicsObserver
+import com.rukiasoft.newrukiapics.ui.lifecycleobservers.ListPicsObserver
 import com.rukiasoft.newrukiapics.ui.presenters.ListPicsPresenter
 import dagger.Module
 import dagger.Provides
