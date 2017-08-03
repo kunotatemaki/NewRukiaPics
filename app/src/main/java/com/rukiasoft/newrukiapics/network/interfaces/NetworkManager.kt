@@ -2,6 +2,7 @@ package com.rukiasoft.newrukiapics.network.interfaces
 
 import android.arch.lifecycle.MutableLiveData
 import com.rukiasoft.newrukiapics.model.Pic
+import com.rukiasoft.newrukiapics.ui.observables.MyCustomObservable
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import java.util.*
 
@@ -10,6 +11,6 @@ import java.util.*
  */
 interface NetworkManager {
 
-    fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<MutableList<Pic>>)
+    fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MyCustomObservable<MutableList<Pic>>)
 
 }

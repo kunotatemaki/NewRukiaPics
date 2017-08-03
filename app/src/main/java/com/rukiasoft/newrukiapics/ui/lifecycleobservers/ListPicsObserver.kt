@@ -17,9 +17,9 @@ class ListPicsObserver  @Inject constructor(): LifecycleObserver, ListPicsContra
 
     private var mLifecycleOwner : ListPicsContracts.ViewContracts? = null
 
-    override fun registerInLifecyclerOwner(view: ListPicsContracts.ViewContracts) {
-        mLifecycleOwner = view
-        view.registerObserver(this)
+    override fun registerInLifecyclerOwner(lifecycleOwner: ListPicsContracts.ViewContracts) {
+        mLifecycleOwner = lifecycleOwner
+        lifecycleOwner.registerObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -30,10 +30,8 @@ class ListPicsObserver  @Inject constructor(): LifecycleObserver, ListPicsContra
             //inject view in presenter
             mLifecycleOwner?.getPresenter()?.bindView(it)
             //force presenter to observe list of pics
-            mLifecycleOwner?.getPresenter()?.observerListOfPics(mLifecycleOwner!!
-                    .getPicsFromCache(FlickrConstants.Order.PUBLISHED))
-            mLifecycleOwner?.getPresenter()?.observerListOfPics(mLifecycleOwner!!
-                    .getPicsFromCache(FlickrConstants.Order.TAKEN))
+            mLifecycleOwner?.getPresenter()?.observerListOfPics(FlickrConstants.Order.PUBLISHED)
+            mLifecycleOwner?.getPresenter()?.observerListOfPics(FlickrConstants.Order.TAKEN)
         }
     }
 
@@ -43,18 +41,6 @@ class ListPicsObserver  @Inject constructor(): LifecycleObserver, ListPicsContra
         log.d(this, "quito")
         mLifecycleOwner?.getPresenter()?.unbindView()
         mLifecycleOwner = null
-    }
-
-    override fun addObserverToListOfTakenPics() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun addObserverToListOfPublishedPics() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun addObserverToListOfPics(){
-
     }
 
 }

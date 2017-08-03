@@ -2,9 +2,7 @@ package com.rukiasoft.newrukiapics.ui.activities
 
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -12,8 +10,6 @@ import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.GridLayoutManager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import com.rukiasoft.newrukiapics.BR
 import com.rukiasoft.newrukiapics.FlickrApplication
@@ -24,6 +20,7 @@ import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.ui.adapters.ListPicsAdapter
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
+import com.rukiasoft.newrukiapics.ui.observables.MyCustomObservable
 import com.rukiasoft.newrukiapics.ui.viewmodel.ListPicsViewModel
 import com.rukiasoft.newrukiapics.utils.DisplayUtils
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
@@ -120,14 +117,14 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
         list_content.pics_recycler_view.swapAdapter(adapter,false)
     }
 
-    override fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>> {
+    override fun getPicsFromCache(order: FlickrConstants.Order) : MyCustomObservable<MutableList<Pic>> {
         val viewModel = ViewModelProviders.of(this).get(ListPicsViewModel::class.java)
         when(order){
             FlickrConstants.Order.PUBLISHED -> {
                 return@getPicsFromCache viewModel.picsByPublishedDates
             }
             FlickrConstants.Order.TAKEN -> {
-                return@getPicsFromCache viewModel.picsByOrderedDates
+                return@getPicsFromCache viewModel.picsByTakenDates
             }
         }
     }
@@ -135,10 +132,6 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     override fun showNoDataFromNetwork() {
         val message = getString(R.string.no_response_from_network)
         Snackbar.make(mBinding.root, message, Snackbar.LENGTH_LONG).show()
-    }
-
-    override fun getLifecycleOwner() : LifecycleOwner {
-        return this
     }
 
     override fun getPresenter() : ListPicsContracts.PresenterContracts{
@@ -182,10 +175,13 @@ class ListPicsActivity : BaseActivity(), ListPicsContracts.ViewContracts {
     }
 
     override fun cleanData(){
-        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).picsByOrderedDates.value = null
-        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).picsByPublishedDates.value = null
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).picsByTakenDates.getObservableValue()?.clear()
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).picsByPublishedDates.getObservableValue()?.clear()
         DisplayUtils.hideSoftKeyboard(this)
 
     }
 
+    override fun addObserverToObservable(order: FlickrConstants.Order, callback: (listOfPics: MutableList<Pic>?) -> Unit) {
+        ViewModelProviders.of(this).get(ListPicsViewModel::class.java).addObserver(order, this, callback)
+    }
 }

@@ -1,5 +1,6 @@
 package com.rukiasoft.newrukiapics.di.components
 
+import android.arch.lifecycle.ViewModel
 import com.rukiasoft.newrukiapics.di.modules.FlickrApplicationModule
 import com.rukiasoft.newrukiapics.di.modules.ListPicsModule
 import com.rukiasoft.newrukiapics.di.modules.NetworkModule

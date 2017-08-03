@@ -3,8 +3,11 @@ package com.rukiasoft.newrukiapics.di.modules
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.preferences.implementations.PreferencesManagerImpl
 import com.rukiasoft.newrukiapics.preferences.interfaces.PreferencesManager
+import com.rukiasoft.newrukiapics.ui.observables.ListOfPicsObservableAndroid
+import com.rukiasoft.newrukiapics.ui.observables.MyCustomObservable
 import com.rukiasoft.newrukiapics.utils.LogHelper
 import dagger.Module
 import dagger.Provides
@@ -33,4 +36,6 @@ class FlickrApplicationModule constructor(val application: Application){
     fun providesPreferenceManager(prefs: PreferencesManagerImpl): PreferencesManager{
         return prefs
     }
+
+
 }

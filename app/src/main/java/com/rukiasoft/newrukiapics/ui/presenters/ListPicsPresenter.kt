@@ -1,13 +1,11 @@
 package com.rukiasoft.newrukiapics.ui.presenters
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
 import android.view.View
 import com.rukiasoft.newrukiapics.di.scope.CustomScopes
 import com.rukiasoft.newrukiapics.model.Pic
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.ui.interfaces.ListPicsContracts
-import com.rukiasoft.newrukiapics.utils.DisplayUtils
+import com.rukiasoft.newrukiapics.ui.observables.MyCustomObservable
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
 import javax.inject.Inject
@@ -26,7 +24,7 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
     @Inject
     protected lateinit var log: LogHelper
 
-    override fun downloadPics(listOfPics: MutableLiveData<MutableList<Pic>>, tags: String, order: FlickrConstants.Order) {
+    override fun downloadPics(listOfPics: MyCustomObservable<MutableList<Pic>>, tags: String, order: FlickrConstants.Order) {
         mView?.let {
             mView!!.setTags(tags)
         }
@@ -43,32 +41,33 @@ class ListPicsPresenter @Inject constructor() :ListPicsContracts.PresenterContra
         return true
     }
 
-    override fun observerListOfPics(listOfPics: MutableLiveData<MutableList<Pic>>) {
+    override fun observerListOfPics(order: FlickrConstants.Order) {
         mView?.let {
-            listOfPics.observe(mView!!.getLifecycleOwner(), Observer {
-                log.d(this, "callback en presenter")
-                mView!!.hideProgressBar()
-                listOfPics.value?.let {
-                    when(listOfPics.value!!.isEmpty()){
-                        true -> mView!!.showNoDataFromNetwork()
-                    }
-                    mView!!.setPicsInUI(pics = listOfPics.value!!)
-                }
-            })
+            mView!!.addObserverToObservable(order, this::handleChangeInList)
         }
     }
 
-    private fun handleChangesInListOfPics(MutableLiveData<MutableList<Pic>>){
-
+    /***
+     * handles the change on observed list of pics
+     */
+    private fun handleChangeInList(listOfPics: MutableList<Pic>?){
+        log.d(this, "callback en presenter")
+        mView!!.hideProgressBar()
+        listOfPics?.let {
+            when(listOfPics.isEmpty()){
+                true -> mView!!.showNoDataFromNetwork()
+                false -> mView!!.setPicsInUI(pics = listOfPics)
+            }
+        }
     }
 
-    override fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>) {
+    override fun setDataFromNetworkOrCache(listOfPics: MyCustomObservable<MutableList<Pic>>) {
         mView?.let {
-            if (listOfPics.value == null) {
+            if (listOfPics.getObservableValue() == null) {
                 mView!!.showProgressBar()
                 downloadPics(listOfPics = listOfPics, tags = mView!!.getTags(), order = mView!!.getSelectedOrder())
             } else {
-                mView!!.setPicsInUI(listOfPics.value!!)
+                mView!!.setPicsInUI(listOfPics.getObservableValue()!!)
                 log.d(this, "estaban en cache")
             }
         }

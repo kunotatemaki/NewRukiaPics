@@ -1,6 +1,5 @@
 package com.rukiasoft.newrukiapics.network.implementations
 
-import android.arch.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.rukiasoft.newrukiapics.BuildConfig
 import com.rukiasoft.newrukiapics.model.Pic
@@ -9,6 +8,7 @@ import com.rukiasoft.newrukiapics.network.endpoints.FlickrEndpoints
 import com.rukiasoft.newrukiapics.network.interfaces.NetworkManager
 import com.rukiasoft.newrukiapics.network.model.FlickrResponse
 import com.rukiasoft.newrukiapics.preferences.interfaces.PreferencesManager
+import com.rukiasoft.newrukiapics.ui.observables.MyCustomObservable
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 import com.rukiasoft.newrukiapics.utils.LogHelper
 import retrofit2.Call
@@ -36,7 +36,7 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
     @Inject
     protected lateinit var prefs: PreferencesManager
 
-    override fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MutableLiveData<MutableList<Pic>>) {
+    override fun getPics(tags: String, order: FlickrConstants.Order, listOfPics: MyCustomObservable<MutableList<Pic>>) {
 
         var orderType : String = ""
         if (order == FlickrConstants.Order.PUBLISHED) {
@@ -62,8 +62,8 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
 
         val flickEndpoints = retrofit.create(FlickrEndpoints::class.java)
 
-        val call : Call<FlickrResponse> = flickEndpoints.getPics(params)
-        call.enqueue(object : Callback<FlickrResponse> {
+        val myCall : Call<FlickrResponse> = flickEndpoints.getPics(params)
+        myCall.enqueue(object : Callback<FlickrResponse> {
             override fun onResponse(call: Call<FlickrResponse>?, response: Response<FlickrResponse>?) {
                 if (response?.isSuccessful as Boolean) {
                     val list : MutableList<Pic> = arrayListOf()
@@ -76,16 +76,16 @@ class NetworkManagerImpl @Inject constructor() : NetworkManager{
                     }
 
                     log.d(NetworkManagerImpl::class.java, list.size.toString())
-                    listOfPics.value = list
+                    listOfPics.setObservableValue(list)
                 } else {
-                    listOfPics.value = null
+                    listOfPics.getObservableValue()?.clear()
                     log.d(NetworkManagerImpl::class.java, "a ver qué sale")
                 }
             }
 
             override fun onFailure(call: Call<FlickrResponse>?, t: Throwable?) {
                 log.d(NetworkManagerImpl::class.java, t?.message.toString())
-                listOfPics.value = null
+                listOfPics.getObservableValue()?.clear()
             }
         })
 

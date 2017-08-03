@@ -2,9 +2,9 @@ package com.rukiasoft.newrukiapics.ui.interfaces
 
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import com.rukiasoft.newrukiapics.model.Pic
+import com.rukiasoft.newrukiapics.ui.observables.MyCustomObservable
 import com.rukiasoft.newrukiapics.utils.FlickrConstants
 
 
@@ -21,11 +21,9 @@ interface ListPicsContracts {
 
         fun setPicsInUI(pics : MutableList<Pic>)
 
-        fun getPicsFromCache(order: FlickrConstants.Order) : MutableLiveData<MutableList<Pic>>
+        fun getPicsFromCache(order: FlickrConstants.Order) : MyCustomObservable<MutableList<Pic>>
 
         fun showNoDataFromNetwork()
-
-        fun getLifecycleOwner() : LifecycleOwner
 
         fun registerObserver(observer: LifecycleObserver)
 
@@ -41,13 +39,16 @@ interface ListPicsContracts {
 
         fun cleanData()
 
+        fun addObserverToObservable(order: FlickrConstants.Order, callback: (listOfPics: MutableList<Pic>?) -> Unit)
+
     }
 
     interface PresenterContracts{
 
-        fun observerListOfPics(listOfPics: MutableLiveData<MutableList<Pic>>)
+        //fun observerListOfPics(listOfPics: MyCustomObservable<MutableList<Pic>>)
+        fun observerListOfPics(order: FlickrConstants.Order)
 
-        fun setDataFromNetworkOrCache(listOfPics: MutableLiveData<MutableList<Pic>>)
+        fun setDataFromNetworkOrCache(listOfPics: MyCustomObservable<MutableList<Pic>>)
 
         fun picClicked(view: View, pic: Pic)
 
@@ -55,7 +56,7 @@ interface ListPicsContracts {
 
         fun unbindView()
 
-        fun downloadPics(listOfPics: MutableLiveData<MutableList<Pic>>, tags: String, order: FlickrConstants.Order)
+        fun downloadPics(listOfPics: MyCustomObservable<MutableList<Pic>>, tags: String, order: FlickrConstants.Order)
 
         fun downloadPicsFromSearch(tags: String):Boolean
 
@@ -65,8 +66,5 @@ interface ListPicsContracts {
 
         fun registerInLifecyclerOwner(lifecycleOwner: ViewContracts)
 
-        fun addObserverToListOfPublishedPics()
-
-        fun addObserverToListOfTakenPics()
     }
 }
